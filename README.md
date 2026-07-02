@@ -1,6 +1,6 @@
 # Sistem Informasi Koperasi Simpan Pinjam
 
-Project kelompok mata kuliah **Rekayasa Perangkat Lunak** menggunakan Laravel.
+**Project kelompok 10** Mata Kuliah Front  End & Back End
 
 ## Repository
 
