@@ -8,10 +8,10 @@ https://github.com/aprilia213/koperasi-simpan-pinjam
 
 ## Teknologi
 
-- Laravel 12
+- Laravel 13
 - PHP
 - SQLite
-- Vite
+- Tailwindcss
 
 ## Cara Menjalankan Project
 
