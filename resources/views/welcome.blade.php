@@ -40,9 +40,15 @@
                     <div class="hidden md:flex items-center gap-4">
                         @if (Route::has('login'))
                             @auth
-                                <a href="{{ url('/dashboard') }}" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 hover:shadow-lg transition-all">
-                                    Dashboard Anggota
-                                </a>
+                                @if(auth()->user()->isAdmin())
+                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 hover:shadow-lg transition-all">
+                                        Dashboard Admin
+                                    </a>
+                                @else
+                                    <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 hover:shadow-lg transition-all">
+                                        Dashboard Anggota
+                                    </a>
+                                @endif
                             @else
                                 <a href="{{ route('login') }}" class="text-sm font-bold text-slate-700 hover:text-emerald-600 transition-colors px-4 py-2">
                                     Masuk Sesi
@@ -80,9 +86,15 @@
                 </div>
                 <div class="pt-4 pb-4 border-t border-slate-100 px-5 flex flex-col gap-3">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="w-full text-center py-2.5 rounded-xl text-base font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md">
-                            Dashboard Anggota
-                        </a>
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="w-full text-center py-2.5 rounded-xl text-base font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md">
+                                Dashboard Admin
+                            </a>
+                        @else
+                            <a href="{{ route('dashboard') }}" class="w-full text-center py-2.5 rounded-xl text-base font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md">
+                                Dashboard Anggota
+                            </a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="w-full text-center py-2.5 rounded-xl text-base font-bold text-slate-700 hover:bg-slate-50">
                             Masuk Sesi
