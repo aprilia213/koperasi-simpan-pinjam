@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
             ]
         );
         // Member/User
-        User::updateOrCreate(
-            ['email' => 'minsyarika20@gmail.com'],
-            [
-                'name' => 'Minsya',
-                'password' => Hash::make('user123'),
-                'role' => 'user',
-                'email_verified_at' => now(),
-            ]
-        );
+        // User::updateOrCreate(
+        //     ['email' => 'minsyarika20@gmail.com'],
+        //     [
+        //         'name' => 'Minsya',
+        //         'password' => Hash::make('user123'),
+        //         'role' => 'user',
+        //         'email_verified_at' => now(),
+        //     ]
+        // );
     }
 }
