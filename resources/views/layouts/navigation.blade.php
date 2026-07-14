@@ -93,12 +93,20 @@
                             Dashboard
                         </x-nav-link>
 
-                        <x-nav-link href="#">
+                        <x-nav-link
+                            :href="route('simpanan')"
+                            :active="request()->routeIs('simpanan')">
+
                             Simpanan
+
                         </x-nav-link>
 
-                        <x-nav-link href="#">
+                        <x-nav-link
+                            :href="route('pinjaman')"
+                            :active="request()->routeIs('pinjaman')">
+
                             Pinjaman
+
                         </x-nav-link>
 
                         <x-nav-link href="#">
@@ -345,13 +353,17 @@
 
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link href="#">
+                <x-responsive-nav-link
+                    :href="route('simpanan')"
+                    :active="request()->routeIs('simpanan')">
 
                     Simpanan
 
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link href="#">
+                <x-responsive-nav-link
+                    :href="route('pinjaman')"
+                    :active="request()->routeIs('pinjaman')">
 
                     Pinjaman
 
