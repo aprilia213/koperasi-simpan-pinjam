@@ -11,6 +11,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Models\Simpanan;
+use App\Models\Pinjaman;
 
 #[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -46,5 +48,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isUser(): bool
     {
         return $this->role === 'user';
+    }
+    public function simpanan()
+    {
+        return $this->hasOne(Simpanan::class);
+    }
+
+
+    public function pinjamans()
+    {
+        return $this->hasMany(Pinjaman::class);
     }
 }
