@@ -77,6 +77,31 @@
                     @enderror
                 </div>
 
+                <!-- Informasi Total Simpanan -->
+                <div class="mb-6 rounded-2xl bg-blue-50 border border-blue-200 p-5">
+                    <h3 class="font-bold text-blue-700">
+                        Total Simpanan Anda
+                    </h3>
+
+                    <p class="text-2xl font-bold text-blue-800 mt-2">
+                        Rp {{ number_format($totalSimpanan,0,',','.') }}
+                    </p>
+
+                    <ul class="mt-3 text-sm text-slate-600 list-disc ml-5 space-y-1">
+                        <li>
+                            Pinjaman sampai Rp5.000.000 membutuhkan total simpanan minimal Rp500.000.
+                        </li>
+
+                        <li>
+                            Pinjaman di atas Rp5.000.000 membutuhkan total simpanan minimal Rp1.000.000.
+                        </li>
+
+                        <li>
+                            Bunga pinjaman sebesar 2% per bulan.
+                        </li>
+                    </ul>
+                </div>
+
                 <!-- Simulasi Pinjaman -->
                 <div class="mb-8">
                     <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
@@ -170,4 +195,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    const jumlahInput = document.querySelector('input[name="jumlah_pinjaman"]');
+    const lamaInput = document.querySelector('select[name="lama_angsuran"]');
+
+    jumlahInput.addEventListener('input', hitungPinjaman);
+    lamaInput.addEventListener('change', hitungPinjaman);
+
+    function hitungPinjaman(){
+        let jumlah = parseInt(jumlahInput.value) || 0;
+        let lama = parseInt(lamaInput.value) || 0;
+        // bunga koperasi 5%
+        let bunga = 2;
+        let totalBunga = jumlah * (bunga / 100);
+        let total = jumlah + totalBunga;
+        let angsuran = 0;
+
+        if(lama > 0){
+            angsuran = total / lama;
+        }
+        document.getElementById('bunga').innerHTML =
+            bunga + " %";
+        document.getElementById('total').innerHTML =
+            "Rp " + total.toLocaleString('id-ID');
+        document.getElementById('angsuran').innerHTML =
+            "Rp " + Math.round(angsuran)
+            .toLocaleString('id-ID');
+    }
+</script>
 </x-app-layout>

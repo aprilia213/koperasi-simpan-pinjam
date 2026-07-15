@@ -54,12 +54,8 @@
 
                             <!-- Body -->
                             <div class="p-7">
-                                {{-- nanti diambil dari database --}}
-                                @php
-                                    $status = 'belum_aktif';
-                                @endphp
 
-                                @if ($status == 'aktif')
+                                @if ($statusAktif)
                                 <div class="flex items-center gap-3 bg-green-100 border border-green-300 rounded-xl p-4">
                                     <div class="w-12 h-12 rounded-full bg-green-500 text-white flex items-center justify-center text-2xl">
                                     ✔
@@ -100,9 +96,15 @@
                                         Simpanan Pokok
                                     </span>
 
-                                    <span class="font-semibold text-red-500">
-                                        Belum Lunas
-                                    </span>
+                                    @if($pokokLunas)
+                                        <span class="font-semibold text-green-600">
+                                            Lunas
+                                        </span>
+                                    @else
+                                        <span class="font-semibold text-red-500">
+                                            Belum Lunas
+                                        </span>
+                                    @endif
                                 </div>
 
                                 <div class="flex justify-between">
@@ -110,19 +112,30 @@
                                         Simpanan Wajib
                                     </span>
 
-                                    <span class="font-semibold text-red-500">
-                                        Belum Lunas
-                                    </span>
+                                    @if($wajibLunas)
+                                        <span class="font-semibold text-green-600">
+                                            Lunas
+                                        </span>
+                                    @else
+                                        <span class="font-semibold text-red-500">
+                                            Belum Lunas
+                                        </span>
+                                    @endif
                                 </div>
 
                                 <div class="border-t pt-4 flex justify-between">
                                     <span class="font-semibold text-slate-700">
                                         Hak Mengajukan Pinjaman
                                     </span>
-
-                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-sm font-bold">
-                                        Belum Tersedia
-                                    </span>
+                                    @if($statusAktif)
+                                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-600 text-sm font-bold">
+                                            Tersedia
+                                        </span>
+                                    @else
+                                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-sm font-bold">
+                                            Belum Tersedia
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                     </div>

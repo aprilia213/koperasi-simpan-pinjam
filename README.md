@@ -11,7 +11,7 @@ https://github.com/aprilia213/koperasi-simpan-pinjam
 - Laravel 13
 - PHP
 - SQLite
-- Tailwindcss
+- vite
 
 ## Cara Menjalankan Project
 
@@ -57,9 +57,10 @@ php artisan serve
 
 | Anggota | Branch | Fitur |
 |---------|--------|-------|
-| Rahma | feat/auth | Login & Register |
-| Anggota 2 | feat/crud-anggota | CRUD Anggota |
-| Anggota 3 | feat/pinjaman | Transaksi Pinjaman |
+| Minsya | feat/auth | Login & Register |
+| Minsya | feat/rbac | role admin-user & dashboard |
+| Rahma | feat/simpan-pinjam user | Transaksi simpan-pinjam |
+| Rahma | feat/crud admin | crud simpan pinjam |
 
 ## Workflow Git
 

@@ -23,7 +23,8 @@ return new class extends Migration {
 
             $table->enum('status',[
                 'menunggu',
-                'diterima'
+                'diterima',
+                'ditolak'
             ])->default('menunggu');
 
             $table->timestamps();
