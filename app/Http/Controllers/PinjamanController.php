@@ -33,14 +33,25 @@ class PinjamanController extends Controller {
         $userId = Auth::id();
         $simpanan = Simpanan::where('user_id', $userId)->first();
         $anggotaAktif = false;
+        $totalSimpanan = 0;
 
-        if ($simpanan &&
-            $simpanan->simpanan_pokok > 0 &&
-            $simpanan->simpanan_wajib > 0
-        ) {
-            $anggotaAktif = true;
+        if ($simpanan) {
+            if(
+                $simpanan->simpanan_pokok > 0 &&
+                $simpanan->simpanan_wajib > 0
+            ){
+                $anggotaAktif = true;
+            }
+
+            $totalSimpanan =
+            $simpanan->simpanan_pokok +
+            $simpanan->simpanan_wajib +
+            $simpanan->simpanan_sukarela;
         }
-        return view('pinjaman-create', compact('anggotaAktif'));
+        return view('pinjaman-create', compact(
+            'anggotaAktif',
+            'totalSimpanan'
+        ));
     }
     
     public function store(Request $request) {
@@ -63,28 +74,43 @@ class PinjamanController extends Controller {
                 );
         }
 
-        // Menentukan bunga
-        switch ($request->lama_angsuran) {
-            case 6:
-                $bunga = 5;
-                break;
-            case 12:
-                $bunga = 8;
-                break;
-            case 24:
-                $bunga = 10;
-                break;
-            case 36:
-                $bunga = 12;
-                break;
-            default:
-                $bunga = 10;
-        }
+        // hitung total simpanan
+
+        $totalSimpanan =
+            $simpanan->simpanan_pokok +
+            $simpanan->simpanan_wajib +
+            $simpanan->simpanan_sukarela;
 
         $jumlah = $request->jumlah_pinjaman;
-        $nilaiBunga = ($jumlah * $bunga) / 100;
-        $total = $jumlah + $nilaiBunga;
-        $angsuran = $total / $request->lama_angsuran;
+
+        // aturan minimal simpanan
+        if($jumlah <= 5000000){
+            $minimalSimpanan = 500000;
+        }else{
+            $minimalSimpanan = 1000000;
+        }
+
+        if($totalSimpanan < $minimalSimpanan){
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Pengajuan ditolak. Total simpanan minimal Rp ' .
+                    number_format($minimalSimpanan,0,',','.')
+                );
+        }
+
+        // bunga tetap 2% per bulan
+        $bunga = 2;
+        $lama = $request->lama_angsuran;
+        $nilaiBunga =
+            $jumlah *
+            ($bunga / 100) *
+            $lama;
+        $total =
+            $jumlah + $nilaiBunga;
+        $angsuran =
+            $total / $lama;
         Pinjaman::create([
             'user_id' => $userId,
             'jumlah_pinjaman' => $jumlah,

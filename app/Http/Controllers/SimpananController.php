@@ -47,14 +47,49 @@ class SimpananController extends Controller {
         if ($simpanan && $simpanan->simpanan_pokok > 0) {
             $sudahBayarPokok = true;
         }
-        return view('simpanan-create', compact('sudahBayarPokok'));
+
+        // cek simpanan wajib bulan ini
+        $sudahBayarWajibBulanIni = TransaksiSimpanan::where('user_id', Auth::id())
+            ->where('jenis', 'wajib')
+            ->whereIn('status', ['menunggu', 'diterima'])
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->exists();
+        
+        return view('simpanan-create', compact(
+            'sudahBayarPokok',
+            'sudahBayarWajibBulanIni'
+        ));
     }
 
     public function store(Request $request) {
         $request->validate([
             'jenis' => 'required',
-            'jumlah' => 'required|numeric'
+            'jumlah' => 'required|numeric',
+            'bukti_pembayaran' => 'required|image|max:2048'
         ]);
+
+        // Cek simpanan wajib bulan ini
+        if ($request->jenis == 'wajib') {
+
+            $cekWajib = TransaksiSimpanan::where('user_id', Auth::id())
+                ->where('jenis', 'wajib')
+                ->whereIn('status', ['menunggu', 'diterima'])
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->exists();
+
+
+            if ($cekWajib) {
+
+                return back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        'Simpanan wajib bulan ini sudah terbayar. Silakan bayar kembali bulan depan.'
+                    );
+            }
+        }
 
         // Cek apakah simpanan pokok sudah pernah dibayar
         if ($request->jenis == 'pokok') {
@@ -66,11 +101,16 @@ class SimpananController extends Controller {
             }
         }
 
-        // Simpan pengajuan
+        // Upload bukti pembayaran
+        $path = $request->file('bukti_pembayaran')
+                        ->store('bukti_pembayaran', 'public');
+
+        // Simpan transaksi
         TransaksiSimpanan::create([
             'user_id' => Auth::id(),
             'jenis' => $request->jenis,
             'jumlah' => $request->jumlah,
+            'bukti_pembayaran' => $path,
             'status' => 'menunggu'
         ]);
 

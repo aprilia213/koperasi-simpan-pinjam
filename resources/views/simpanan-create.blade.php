@@ -82,8 +82,14 @@
 
             <!-- Form -->
             <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data" class="p-8">
-            @csrf
+                
+            @if(session('error'))
+            <div class="mb-5 p-4 rounded-xl bg-red-100 border border-red-300 text-red-700">
+                {{ session('error') }}
+            </div>
+            @endif
 
+            @csrf
             <!-- Jenis Simpanan -->
             <div class="mb-6">
                 <label class="block font-semibold text-slate-700 mb-2">

@@ -15,6 +15,13 @@ class DashboardController extends Controller {
         $simpananWajib = $simpanan?->simpanan_wajib ?? 0;
         $simpananSukarela = $simpanan?->simpanan_sukarela ?? 0;
 
+        //cek lunas
+        $pokokLunas = $simpananPokok >= 100000;
+        $wajibLunas = $simpananWajib >= 50000;
+
+        //status anggota
+        $statusAktif = $pokokLunas && $wajibLunas;
+
         $totalSimpanan =
             $simpananPokok +
             $simpananWajib +
@@ -29,7 +36,10 @@ class DashboardController extends Controller {
             'simpananWajib',
             'simpananSukarela',
             'totalSimpanan',
-            'totalPinjaman'
+            'totalPinjaman',
+            'statusAktif',
+            'pokokLunas',
+            'wajibLunas'
         ));
     }
 }

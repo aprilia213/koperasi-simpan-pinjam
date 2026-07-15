@@ -69,11 +69,15 @@
                             Anggota
                         </x-nav-link>
 
-                        <x-nav-link href="#">
+                        <x-nav-link 
+                            :href="route('admin.simpananadmin')" 
+                            :active="request()->routeIs('admin.simpananadmin')">
                             Simpanan
                         </x-nav-link>
 
-                        <x-nav-link href="#">
+                        <x-nav-link 
+                            :href="route('admin.pinjamanadmin')" 
+                            :active="request()->routeIs('admin.pinjamanadmin')">
                             Pinjaman
                         </x-nav-link>
 
@@ -96,17 +100,13 @@
                         <x-nav-link
                             :href="route('simpanan')"
                             :active="request()->routeIs('simpanan')">
-
                             Simpanan
-
                         </x-nav-link>
 
                         <x-nav-link
                             :href="route('pinjaman')"
                             :active="request()->routeIs('pinjaman')">
-
                             Pinjaman
-
                         </x-nav-link>
 
                         <x-nav-link href="#">
@@ -308,9 +308,7 @@
                 <x-responsive-nav-link
                     :href="route('admin.dashboard')"
                     :active="request()->routeIs('admin.dashboard')">
-
                     Dashboard
-
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link href="#">
@@ -319,16 +317,16 @@
 
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link href="#">
-
+                <x-responsive-nav-link
+                    :href="route('admin.simpananadmin')"
+                    :active="request()->routeIs('admin.simpananadmin')">
                     Simpanan
-
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link href="#">
-
+                <x-responsive-nav-link 
+                    :href="route('admin.pinjamanadmin')"
+                    :active="request()->routeIs('admin.pinjamanadmin')">
                     Pinjaman
-
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link href="#">

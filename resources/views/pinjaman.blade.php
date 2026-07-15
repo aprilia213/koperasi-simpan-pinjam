@@ -37,18 +37,18 @@
                 </p>
 
                 <h2 class="mt-4 text-3xl font-extrabold">
-                    Rp {{ number_format($pinjaman->sum('jumlah_pinjaman'),0,',','.') }}
+                    Rp {{ number_format($pinjaman->where('status','disetujui')->sum('jumlah_pinjaman'),0,',','.') }}
                 </h2>
             </div>
 
-            <!-- Jumlah Pengajuan -->
-            <div class="bg-white border border-emerald-100 rounded-3xl p-6 shadow-lg">
+            <!-- Menunggu -->
+            <div class="bg-white border border-lime-100 rounded-3xl p-6 shadow-lg">
                 <p class="text-sm text-slate-500">
-                    Jumlah Pengajuan
+                    Menunggu
                 </p>
 
-                <h2 class="mt-4 text-2xl font-bold text-emerald-600">
-                    {{ $pinjaman->count() }}
+                <h2 class="mt-4 text-2xl font-bold text-lime-600">
+                    {{ $pinjaman->where('status','menunggu')->count() }}
                 </h2>
             </div>
 
@@ -63,16 +63,16 @@
                 </h2>
             </div>
 
-            <!-- Menunggu -->
-            <div class="bg-white border border-lime-100 rounded-3xl p-6 shadow-lg">
+            <div class="bg-white border border-red-100 rounded-3xl p-6 shadow-lg">
                 <p class="text-sm text-slate-500">
-                    Menunggu
+                    Ditolak
                 </p>
 
-                <h2 class="mt-4 text-2xl font-bold text-lime-600">
-                    {{ $pinjaman->where('status','menunggu')->count() }}
+                <h2 class="mt-4 text-2xl font-bold text-red-600">
+                    {{ $pinjaman->where('status','ditolak')->count() }}
                 </h2>
             </div>
+            
         </div>
     </div>
 </section>
