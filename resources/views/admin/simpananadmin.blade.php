@@ -6,7 +6,6 @@
             <h1 class="text-3xl font-bold text-emerald-700">
                 Kelola Simpanan
             </h1>
-
             <p class="text-slate-600 mt-2">
                 Daftar seluruh transaksi simpanan anggota koperasi.
             </p>
@@ -17,6 +16,7 @@
                 {{ session('success') }}
             </div>
         @endif
+
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100">
             <div class="overflow-x-auto">
                 <table class="min-w-full">
@@ -40,7 +40,7 @@
                             </td>
 
                             <td class="px-6 py-4 font-semibold">
-                                {{ $item->user->name }}
+                                {{ $item->user->name ?? 'Tidak Diketahui' }}
                             </td>
 
                             <td class="px-6 py-4">
@@ -48,32 +48,32 @@
                             </td>
 
                             <td class="px-6 py-4">
-                                Rp {{ number_format($item->jumlah,0,',','.') }}
+                                Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
 
                             <td class="px-6 py-4">
                                 @if($item->bukti_pembayaran)
                                     <button 
-                                        onclick="openBukti('{{ asset('storage/'.$item->bukti_pembayaran) }}')"
-                                        class="text-blue-600 hover:underline">
+                                        onclick="openBukti('{{ asset('storage/' . $item->bukti_pembayaran) }}')"
+                                        class="text-blue-600 hover:underline font-medium">
                                         Lihat Bukti
                                     </button>
                                 @else
-                                    -
+                                    <span class="text-slate-400">-</span>
                                 @endif
                             </td>
 
                             <td class="px-6 py-4 text-center">
                                 @if($item->status == 'menunggu')
-                                    <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
+                                    <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium">
                                         Menunggu
                                     </span>
                                 @elseif($item->status == 'diterima')
-                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
                                         Diterima
                                     </span>
                                 @else
-                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm">
+                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-medium">
                                         Ditolak
                                     </span>
                                 @endif
@@ -81,39 +81,34 @@
 
                             <td class="px-6 py-4 text-center">
                                 @if($item->status == 'menunggu')
-                                <div class="flex justify-center gap-2">
-                                    <form action="{{ route('admin.simpanan.terima', $item->id) }}"
-                                        method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <button
-                                            class="px-3 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600">
-                                            Terima
-                                        </button>
-                                    </form>
+                                    <div class="flex justify-center gap-2">
+                                        <form action="{{ route('admin.simpanan.terima', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="px-3 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition font-medium text-sm">
+                                                Terima
+                                            </button>
+                                        </form>
 
-                                    <form action="{{ route('admin.simpanan.tolak', $item->id) }}"
-                                        method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <button
-                                            class="px-3 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600">
-                                            Tolak
-                                        </button>
-                                    </form>
-                                </div>
+                                        <form action="{{ route('admin.simpanan.tolak', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="px-3 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition font-medium text-sm">
+                                                Tolak
+                                            </button>
+                                        </form>
+                                    </div>
                                 @elseif($item->status == 'diterima')
-                                <span class="text-green-600 font-semibold">
-                                    Sudah Diterima
-                                </span>
+                                    <span class="text-green-600 font-semibold text-sm">
+                                        Sudah Diterima
+                                    </span>
                                 @else
-                                <span class="text-red-600 font-semibold">
-                                    Ditolak
-                                </span>
+                                    <span class="text-red-600 font-semibold text-sm">
+                                        Ditolak
+                                    </span>
                                 @endif
                             </td>
                         </tr>
-
                         @empty
                         <tr>
                             <td colspan="7" class="text-center py-8 text-slate-500">
@@ -129,38 +124,31 @@
 </div>
 
 <!-- Modal Bukti Pembayaran -->
-<div id="modalBukti" class="fixed inset-0 hidden bg-black/60 z-50 items-center justify-center">
-    <div class="relative bg-white rounded-2xl p-5 max-w-3xl">
+<div id="modalBukti" class="fixed inset-0 hidden bg-black/60 z-50 items-center justify-center p-4">
+    <div class="relative bg-white rounded-2xl p-5 max-w-3xl w-full flex flex-col items-center shadow-2xl">
         <!-- Tombol X -->
         <button onclick="closeBukti()"
-                class="absolute top-3 right-3 bg-red-500 text-white 
-                rounded-full w-10 h-10 text-xl">
-            ×
+                class="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white 
+                rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition">
+            &times;
         </button>
         <!-- Gambar -->
-        <img id="gambarBukti"
-             src=""
-             class="max-h-[80vh] rounded-xl">
+        <img id="gambarBukti" src="" class="max-h-[80vh] w-auto rounded-xl object-contain mt-2">
     </div>
 </div>
 
 <script>
 function openBukti(url) {
     document.getElementById('gambarBukti').src = url;
-
     let modal = document.getElementById('modalBukti');
-
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
 
-
 function closeBukti() {
     let modal = document.getElementById('modalBukti');
-
     modal.classList.add('hidden');
     modal.classList.remove('flex');
-
     document.getElementById('gambarBukti').src = '';
 }
 </script>

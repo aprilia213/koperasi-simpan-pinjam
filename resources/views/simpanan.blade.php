@@ -1,156 +1,96 @@
 <x-app-layout>
-<section class="relative overflow-hidden bg-gradient-to-br from-white via-emerald-50 to-green-100 py-14 sm:py-24">
-    <div class="absolute -top-20 -right-20 w-[400px] h-[400px] bg-emerald-200/40 rounded-full blur-3xl"></div>
-        <div class="relative max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-                <div>
-                    <span class="inline-flex px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest">
-                        Simpanan Anggota
-                    </span>
-
-                    <h1 class="mt-5 text-4xl font-extrabold text-slate-900">
-                        Kelola Simpanan Anda
-                    </h1>
-
-                    <p class="mt-3 text-slate-600 max-w-xl">
-                        Pantau jumlah simpanan pokok, wajib, dan sukarela
-                        secara mudah dan transparan.
-                    </p>
-                </div>
-
-                <!-- Tombol Simpan Uang -->
-                <div>
-                    <a href="{{ route('simpanan.create') }}" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-lg transition">
-                        💰 Simpan Uang
-                    </a>
-                </div>
+<div class="pt-24 min-h-screen bg-gradient-to-br from-white via-emerald-50 to-green-100">
+    <div class="max-w-7xl mx-auto px-6 py-10">
+        <!-- Header -->
+        <div class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-emerald-700">Simpanan Saya</h1>
+                <p class="text-slate-600 mt-2">Ringkasan total simpanan dan riwayat transaksi Anda.</p>
+            </div>
+            <div>
+                <a href="{{ route('simpanan.create') }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow transition">
+                    + Setor Simpanan
+                </a>
             </div>
         </div>
-</section>
 
-<!-- ================= SUMMARY ================= -->
-<section class="py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Total Simpanan -->
-            <div class="bg-gradient-to-br from-emerald-600 to-green-700 rounded-3xl p-6 text-white shadow-xl">
-                <p class="text-sm text-emerald-100">
-                    Total Simpanan
-                </p>
-
-                <h2 class="mt-4 text-3xl font-extrabold">
-                    Rp {{ number_format($totalSimpanan,0,',','.') }}
-                </h2>
+        @if(session('success'))
+            <div class="mb-6 rounded-xl bg-green-100 border border-green-300 p-4 text-green-700">
+                {{ session('success') }}
             </div>
+        @endif
 
-            <!-- Pokok -->
-            <div class="bg-white border border-emerald-100 rounded-3xl p-6 shadow-lg">
-                <p class="text-sm text-slate-500">
-                    Simpanan Pokok
-                </p>
-
-                <h2 class="mt-4 text-2xl font-bold text-emerald-600">
-                    Rp {{ number_format($simpananPokok,0,',','.') }}
-                </h2>
+        <!-- Card Total Simpanan -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-100">
+                <p class="text-slate-500 text-sm font-medium">Simpanan Pokok</p>
+                <h3 class="text-2xl font-bold text-emerald-700 mt-2">Rp {{ number_format($simpananPokok, 0, ',', '.') }}</h3>
             </div>
-
-            <!-- Wajib -->
-            <div class="bg-white border border-green-100 rounded-3xl p-6 shadow-lg">
-                <p class="text-sm text-slate-500">
-                    Simpanan Wajib
-                </p>
-
-                <h2 class="mt-4 text-2xl font-bold text-green-600">
-                    Rp {{ number_format($simpananWajib,0,',','.') }}
-                </h2>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-100">
+                <p class="text-slate-500 text-sm font-medium">Simpanan Wajib</p>
+                <h3 class="text-2xl font-bold text-emerald-700 mt-2">Rp {{ number_format($simpananWajib, 0, ',', '.') }}</h3>
             </div>
-
-            <!-- Sukarela -->
-            <div class="bg-white border border-lime-100 rounded-3xl p-6 shadow-lg">
-                <p class="text-sm text-slate-500">
-                    Simpanan Sukarela
-                </p>
-
-                <h2 class="mt-4 text-2xl font-bold text-lime-600">
-                    Rp {{ number_format($simpananSukarela,0,',','.') }}
-                </h2>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-100">
+                <p class="text-slate-500 text-sm font-medium">Simpanan Sukarela</p>
+                <h3 class="text-2xl font-bold text-emerald-700 mt-2">Rp {{ number_format($simpananSukarela, 0, ',', '.') }}</h3>
+            </div>
+            <div class="bg-emerald-600 p-6 rounded-2xl shadow-md text-white">
+                <p class="text-emerald-100 text-sm font-medium">Total Keseluruhan</p>
+                <h3 class="text-2xl font-bold mt-2">Rp {{ number_format($totalSimpanan, 0, ',', '.') }}</h3>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- ================= RIWAYAT SIMPANAN ================= -->
-<section class="pb-14 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="bg-white border border-emerald-100 rounded-3xl shadow-lg overflow-hidden">
-            <div class="bg-gradient-to-r from-emerald-700 to-green-700 p-6 text-white">
-                <h2 class="text-xl font-bold">
-                    Riwayat Simpanan
-                </h2>
-
-                <p class="text-sm text-emerald-100">
-                    Riwayat penyetoran simpanan anggota.
-                </p>
+        <!-- Tabel Riwayat Transaksi -->
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100">
+            <div class="p-6 border-b border-slate-100">
+                <h2 class="text-xl font-bold text-slate-800">Riwayat Pengajuan Simpanan</h2>
             </div>
-
             <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-emerald-50">
+                <table class="min-w-full">
+                    <thead class="bg-slate-50 text-slate-600">
                         <tr>
-                            <th class="px-6 py-4 text-left">
-                                Tanggal
-                            </th>
-
-                            <th class="px-6 py-4 text-left">
-                                Jenis
-                            </th>
-
-                            <th class="px-6 py-4 text-left">
-                                Jumlah
-                            </th>
-
-                            <th class="px-6 py-4 text-left">
-                                Status
-                            </th>
+                            <th class="px-6 py-4 text-left font-semibold">No</th>
+                            <th class="px-6 py-4 text-left font-semibold">Jenis Simpanan</th>
+                            <th class="px-6 py-4 text-left font-semibold">Jumlah</th>
+                            <th class="px-6 py-4 text-left font-semibold">Tanggal</th>
+                            <th class="px-6 py-4 text-center font-semibold">Status</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @forelse($riwayat as $item)
-                        <tr class="border-t">
-                            <td class="px-6 py-4">
-                                {{ $item->created_at->format('d M Y') }}
+                        <tr class="border-b hover:bg-emerald-50/50">
+                            <td class="px-6 py-4 text-slate-700">
+                                {{ $loop->iteration }}
                             </td>
-
-                            <td class="px-6 py-4 capitalize">
-                                {{ $item->jenis }}
+                            <td class="px-6 py-4 font-semibold text-slate-800">
+                                Simpanan {{ ucfirst($item->jenis) }}
                             </td>
-
-                            <td class="px-6 py-4 font-bold text-emerald-600">
-                                Rp {{ number_format($item->jumlah,0,',','.') }}
+                            <td class="px-6 py-4 text-slate-700">
+                                Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
-
-                            <td class="px-6 py-4">
-                                @if($item->status == 'diterima')
-                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                            <td class="px-6 py-4 text-slate-500 text-sm">
+                                {{ $item->created_at->format('d M Y, H:i') }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if($item->status == 'menunggu')
+                                    <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">
+                                        Menunggu Verifikasi
+                                    </span>
+                                @elseif($item->status == 'diterima')
+                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
                                         Diterima
                                     </span>
-                                @elseif($item->status == 'ditolak')
-                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm">
-                                        Ditolak
-                                    </span>
                                 @else
-                                    <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
-                                        Menunggu
+                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                        Ditolak
                                     </span>
                                 @endif
                             </td>
                         </tr>
-                        
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center py-8 text-slate-500">
-                                Belum ada riwayat simpanan.
+                            <td colspan="5" class="text-center py-10 text-slate-400">
+                                Belum ada riwayat transaksi simpanan.
                             </td>
                         </tr>
                         @endforelse
@@ -159,5 +99,5 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 </x-app-layout>

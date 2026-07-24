@@ -8,19 +8,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Pastikan user sudah login
         if (!auth()->check()) {
-            abort(403, 'Anda harus login terlebih dahulu.');
+            return redirect('login');
         }
 
-        // Cek apakah role user termasuk yang diizinkan
-        if (!in_array(auth()->user()->role, $roles)) {
-            abort(403, 'Anda tidak memiliki hak akses.');
+        // AMBIL ROLE USER DAN UBAH KE HURUF KECIL
+        $userRole = strtolower(auth()->user()->role);
+        
+        // UBAH SEMUA ROLE YANG DIIZINKAN KE HURUF KECIL
+        $allowedRoles = array_map('strtolower', $roles);
+
+        // CEK APAKAH ROLE USER TERMASUK DALAM ARRAY YANG DIIZINKAN
+        if (!in_array($userRole, $allowedRoles)) {
+            abort(403, 'Anda tidak memiliki hak akses untuk halaman ini.');
         }
 
         return $next($request);

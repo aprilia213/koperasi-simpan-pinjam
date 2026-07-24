@@ -102,7 +102,7 @@
                             </th>
 
                             <th class="px-6 py-4 text-left">
-                                Angsuran
+                                Angsuran & Detail
                             </th>
 
                             <th class="px-6 py-4 text-left">
@@ -122,8 +122,35 @@
                                 Rp {{ number_format($item->jumlah_pinjaman,0,',','.') }}
                             </td>
 
+                            <!-- Kolom Angsuran, Sisa, Jatuh Tempo, dan Denda -->
                             <td class="px-6 py-4">
-                                {{ $item->lama_angsuran }} Bulan
+                                @if($item->status == 'lunas')
+                                    <span class="text-emerald-600 font-bold">Lunas ({{ $item->lama_angsuran }} Bulan)</span>
+                                @else
+                                    <div class="font-medium text-slate-800">
+                                        Terbayar: {{ $item->pembayaran_lunas }} / {{ $item->lama_angsuran }} Bulan
+                                    </div>
+                                    <div class="text-xs text-slate-500 mt-0.5">
+                                        Sisa Tenor: <span class="font-bold text-red-500">{{ $item->sisa_angsuran }} Bulan</span>
+                                    </div>
+                                    
+                                    @if($item->status == 'disetujui')
+                                        <div class="text-xs text-blue-600 mt-1">
+                                            Jatuh Tempo: 
+                                            @if($item->jatuh_tempo_berikutnya !== 'Lunas')
+                                                <span class="font-semibold">{{ $item->jatuh_tempo_berikutnya->format('d M Y') }}</span>
+                                            @else
+                                                <span class="text-emerald-600 font-bold">Lunas</span>
+                                            @endif
+                                        </div>
+
+                                        @if($item->denda > 0)
+                                            <div class="text-xs text-red-600 font-bold mt-1">
+                                                ⚠️ Denda: Rp {{ number_format($item->denda, 0, ',', '.') }}
+                                            </div>
+                                        @endif
+                                    @endif
+                                @endif
                             </td>
 
                             <td class="px-6 py-4">
@@ -140,7 +167,7 @@
                                     Ditolak
                                 </span>
                             @else
-                                <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
+                                <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-bold">
                                     Lunas
                                 </span>
                             @endif
