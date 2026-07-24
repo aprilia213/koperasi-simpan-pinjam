@@ -106,11 +106,11 @@
                         Bayar Angsuran
                     </x-nav-link>
 
-                    <x-nav-link
+                    <!-- <x-nav-link
                         :href="route('riwayat')"
                         :active="request()->routeIs('riwayat')">
                         Riwayat
-                    </x-nav-link>
+                    </x-nav-link> -->
 
                 @endif
 
@@ -281,9 +281,9 @@
                     Bayar Angsuran
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('riwayat')">
+                <!-- <x-responsive-nav-link :href="route('riwayat')">
                     Riwayat
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> -->
 
             @endif
 
